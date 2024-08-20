@@ -1,1 +1,12 @@
 # fint
+
+#How to run?
+#cd server 
+#npm install
+#node server.js
+
+#open new terminal
+#cd client
+#npm install
+#npm start
+#scan the QR code for expo or press a for andriod studio
