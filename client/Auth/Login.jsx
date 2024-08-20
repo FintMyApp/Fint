@@ -7,7 +7,7 @@ import {
   StyleSheet,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
-import axios, { Axios } from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { z } from "zod";
 import axiosInstance from "../axiosInstance";
 
@@ -33,10 +33,13 @@ const Login = ({ navigation }) => {
         password,
       });
 
-      await axiosInstance.post("/auth/login", {
+      const response = await axiosInstance.post("/auth/login", {
         phoneNumber,
         password,
       });
+
+      await AsyncStorage.setItem("authToken", response.data.token);
+
       navigation.navigate("Home");
     } catch (error) {
       if (error instanceof z.ZodError) {

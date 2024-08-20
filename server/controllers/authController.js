@@ -1,4 +1,3 @@
-import express from "express";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { User } from "../models/UserModel.js";
@@ -104,6 +103,14 @@ export const login = async (req, res) => {
     });
 
     res.json({ token });
+  } catch (error) {
+    res.status(500).json({ message: "Server error" });
+    console.error(error.message);
+  }
+};
+export const logout = async (req, res) => {
+  try {
+    res.json({ message: "Logged out successfully" });
   } catch (error) {
     res.status(500).json({ message: "Server error" });
     console.error(error.message);
