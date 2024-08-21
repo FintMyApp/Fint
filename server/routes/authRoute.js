@@ -7,6 +7,7 @@ import {
 } from "../controllers/resetPassword.js";
 import authMiddleware from "../middlewares/authMiddleware.js";
 import { getUserProfile } from "../controllers/UserController.js";
+import { resendOtp } from "../controllers/resendOtp.js";
 
 const router = express.Router();
 

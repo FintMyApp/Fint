@@ -6,10 +6,10 @@ import {
   TextInput,
   TouchableOpacity,
   Alert,
+  ActivityIndicator,
 } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { LinearGradient } from "expo-linear-gradient";
-import axios from "axios";
 import axiosInstance from "../axiosInstance";
 
 const Otp = ({ navigation, route }) => {
@@ -18,6 +18,7 @@ const Otp = ({ navigation, route }) => {
   const [showOtp, setShowOtp] = useState(false);
   const [loading, setLoading] = useState(false);
   const [timer, setTimer] = useState(30);
+  const [resendVisible, setResendVisible] = useState(false);
 
   useEffect(() => {
     if (timer > 0) {
@@ -26,6 +27,8 @@ const Otp = ({ navigation, route }) => {
       }, 1000);
 
       return () => clearInterval(intervalId);
+    } else {
+      setResendVisible(true);
     }
   }, [timer]);
 
@@ -44,7 +47,32 @@ const Otp = ({ navigation, route }) => {
       }
     } catch (error) {
       console.error("OTP verification failed", error.message);
-      Alert.alert("Error", "Something went wrong. Please try again.");
+      const errorMessage =
+        error.response?.data?.message ||
+        "Something went wrong. Please try again.";
+      Alert.alert("Error", errorMessage);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleResendOtp = async () => {
+    setLoading(true);
+    try {
+      const response = await axiosInstance.post(`/otp/resend-otp`, { email });
+      if (response.status === 200) {
+        Alert.alert("Success", "OTP has been resent to your email.");
+        setTimer(30);
+        setResendVisible(false);
+      } else {
+        Alert.alert("Error", response.data.message || "Failed to resend OTP");
+      }
+    } catch (error) {
+      console.error("Resending OTP failed", error.message);
+      const errorMessage =
+        error.response?.data?.message ||
+        "Something went wrong. Please try again.";
+      Alert.alert("Error", errorMessage);
     } finally {
       setLoading(false);
     }
@@ -78,12 +106,25 @@ const Otp = ({ navigation, route }) => {
       <Text style={styles.timer}>
         {timer > 0 ? `Time left: ${timer} sec` : "Time is up!"}
       </Text>
+      {resendVisible && (
+        <TouchableOpacity
+          style={styles.resendButton}
+          onPress={handleResendOtp}
+          disabled={loading}
+        >
+          <Text style={styles.resendButtonText}>Resend OTP</Text>
+        </TouchableOpacity>
+      )}
       <TouchableOpacity
         style={[styles.button, loading && { backgroundColor: "gray" }]}
         onPress={handleSubmit}
-        disabled={loading || timer === 0}
+        disabled={loading || !otp}
       >
-        <Text style={styles.buttonText}>Submit</Text>
+        {loading ? (
+          <ActivityIndicator color="#fff" />
+        ) : (
+          <Text style={styles.buttonText}>Submit</Text>
+        )}
       </TouchableOpacity>
     </LinearGradient>
   );
@@ -127,6 +168,20 @@ const styles = StyleSheet.create({
     color: "#fff",
     textAlign: "center",
     marginBottom: 20,
+  },
+  resendButton: {
+    backgroundColor: "#41c0f9",
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 5,
+    alignItems: "center",
+    alignSelf: "center",
+    marginBottom: 20,
+  },
+  resendButtonText: {
+    color: "#fff",
+    fontSize: 16,
+    textAlign: "center",
   },
   button: {
     backgroundColor: "black",

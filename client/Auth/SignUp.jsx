@@ -13,19 +13,27 @@ import {
 import { z } from "zod";
 import axiosInstance from "../axiosInstance";
 
+const nameRegex = /^[A-Za-z]+$/;
+const phoneRegex = /^\d{10}$/;
+
 const registerSchema = z.object({
   firstName: z
     .string()
     .min(2, "First name must be at least 2 characters long")
-    .max(50, "First name must not exceed 50 characters"),
+    .max(50, "First name must not exceed 50 characters")
+    .regex(nameRegex, "First name can only contain alphabets"),
   lastName: z
     .string()
     .min(1, "Last name must be at least 1 character long")
-    .max(50, "Last name must not exceed 50 characters"),
+    .max(50, "Last name must not exceed 50 characters")
+    .regex(nameRegex, "Last name can only contain alphabets"),
   phoneNumber: z
     .string()
     .length(10, "Phone number must be exactly 10 digits")
-    .regex(/^\d{10}$/, "Phone number must be exactly 10 digits"),
+    .regex(
+      phoneRegex,
+      "Phone number must be exactly 10 digits and contain only numbers"
+    ),
   email: z.string().email("Invalid email address"),
   password: z
     .string()

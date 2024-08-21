@@ -1,6 +1,7 @@
 import express from "express";
 import { User } from "../models/UserModel.js";
 import { z } from "zod";
+import { resendOtp } from "../controllers/resendOtp.js";
 
 const router = express.Router();
 
@@ -15,9 +16,7 @@ const emailParamSchema = z.object({
 router.post("/verify-otp/:email", async (req, res) => {
   try {
     const emailParams = emailParamSchema.parse(req.params);
-
     const { otp } = otpSchema.parse(req.body);
-
     const { email } = emailParams;
 
     console.log(email);
@@ -46,9 +45,11 @@ router.post("/verify-otp/:email", async (req, res) => {
     if (error instanceof z.ZodError) {
       return res.status(400).json({ errors: error.errors });
     }
-    console.error(error.message);
+    console.error("Verification error:", error.message);
     res.status(500).json({ message: "Server error" });
   }
 });
+
+router.post("/resend-otp", resendOtp);
 
 export default router;
