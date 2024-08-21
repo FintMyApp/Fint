@@ -1,8 +1,6 @@
 import React, { useState } from "react";
-import axios from "axios";
-import { LinearGradient } from "expo-linear-gradient";
-import { MyCheckbox } from "../components/MyCheckbox";
 import {
+  ImageBackground,
   View,
   Text,
   TextInput,
@@ -10,8 +8,10 @@ import {
   ActivityIndicator,
   StyleSheet,
 } from "react-native";
+import Icon from "react-native-vector-icons/FontAwesome";
 import { z } from "zod";
 import axiosInstance from "../axiosInstance";
+import { MyCheckbox } from "../components/MyCheckbox";
 
 const nameRegex = /^[A-Za-z]+$/;
 const phoneRegex = /^\d{10}$/;
@@ -56,9 +56,20 @@ const SignUp = ({ navigation }) => {
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
   const [isChecked, setIsChecked] = useState(false);
+  const [showPassword, setShowPassword] = useState(false); // State to toggle password visibility
 
   const handleSignup = async () => {
     setLoading(true);
+    setErrors({});
+
+    if (!isChecked) {
+      setErrors((prev) => ({
+        ...prev,
+        general: "You must agree to the Terms and Conditions",
+      }));
+      setLoading(false);
+      return;
+    }
 
     if (!firstName || !lastName || !phoneNumber || !email || !password) {
       setErrors({
@@ -110,139 +121,165 @@ const SignUp = ({ navigation }) => {
   };
 
   return (
-    <LinearGradient
-      style={styles.container}
-      locations={[0.06, 0.11, 0.42, 0.73, 0.96]}
-      colors={["#050c9c", "#050c9c", "#3575ef", "#41c0f9", "#a7e6ff"]}
+    <ImageBackground
+      source={require("../assets/bg.jpg")}
+      style={styles.background}
     >
-      <Text style={styles.title1}>FINT</Text>
-      <Text style={styles.title}>Welcome, Create an Account</Text>
+      <View style={styles.container}>
+        <Text style={styles.title1}>FINT</Text>
+        <Text style={styles.title}>Welcome, Create an Account</Text>
 
-      {errors.general && <Text style={styles.errorText}>{errors.general}</Text>}
-
-      <Text style={styles.label}>First Name</Text>
-      <TextInput
-        style={[
-          styles.input,
-          errors.firstName && { borderColor: "red", borderWidth: 1 },
-        ]}
-        placeholder="Enter your first name"
-        value={firstName}
-        onChangeText={(text) => setFirstName(text)}
-        placeholderTextColor="#999"
-      />
-      {errors.firstName && (
-        <Text style={styles.errorText}>{errors.firstName}</Text>
-      )}
-
-      <Text style={styles.label}>Last Name</Text>
-      <TextInput
-        style={[
-          styles.input,
-          errors.lastName && { borderColor: "red", borderWidth: 1 },
-        ]}
-        placeholder="Enter your last name"
-        value={lastName}
-        onChangeText={(text) => setLastName(text)}
-        placeholderTextColor="#999"
-      />
-      {errors.lastName && (
-        <Text style={styles.errorText}>{errors.lastName}</Text>
-      )}
-
-      <Text style={styles.label}>Phone Number</Text>
-      <TextInput
-        style={[
-          styles.input,
-          errors.phoneNumber && { borderColor: "red", borderWidth: 1 },
-        ]}
-        placeholder="Enter your phone number"
-        value={phoneNumber}
-        onChangeText={(text) => setPhoneNumber(text)}
-        keyboardType="phone-pad"
-        placeholderTextColor="#999"
-      />
-      {errors.phoneNumber && (
-        <Text style={styles.errorText}>{errors.phoneNumber}</Text>
-      )}
-
-      <Text style={styles.label}>Email</Text>
-      <TextInput
-        style={[
-          styles.input,
-          errors.email && { borderColor: "red", borderWidth: 1 },
-        ]}
-        placeholder="Enter your email"
-        value={email}
-        onChangeText={(text) => setEmail(text)}
-        placeholderTextColor="#999"
-        keyboardType="email-address"
-        autoCapitalize="none"
-      />
-      {errors.email && <Text style={styles.errorText}>{errors.email}</Text>}
-
-      <Text style={styles.label}>Password</Text>
-      <TextInput
-        style={[
-          styles.input,
-          errors.password && { borderColor: "red", borderWidth: 1 },
-        ]}
-        placeholder="Enter your password"
-        value={password}
-        onChangeText={(text) => setPassword(text)}
-        secureTextEntry
-        placeholderTextColor="#999"
-        autoCapitalize="none"
-      />
-      {errors.password && (
-        <Text style={styles.errorText}>{errors.password}</Text>
-      )}
-
-      <View style={styles.checkboxContainer}>
-        <MyCheckbox
-          checked={isChecked}
-          onChange={() => setIsChecked(!isChecked)}
-        />
-        <TouchableOpacity onPress={handleTermsNavigation}>
-          <Text style={styles.checkboxLabel}>
-            I agree to the Terms and Conditions
-          </Text>
-        </TouchableOpacity>
-      </View>
-      {errors.general && <Text style={styles.errorText}>{errors.general}</Text>}
-
-      <TouchableOpacity
-        style={[styles.button, loading && { backgroundColor: "gray" }]}
-        onPress={handleSignup}
-        disabled={loading}
-      >
-        {loading ? (
-          <ActivityIndicator color="#fff" />
-        ) : (
-          <Text style={styles.buttonText}>Sign Up</Text>
+        {errors.general && (
+          <Text style={styles.errorText}>{errors.general}</Text>
         )}
-      </TouchableOpacity>
 
-      <View style={styles.loginContainer}>
-        <Text style={styles.loginText}>Already have an account?</Text>
-        <TouchableOpacity onPress={() => navigation.navigate("Login")}>
-          <Text style={styles.loginLink}>Login here</Text>
+        <Text style={styles.label}>First Name</Text>
+        <TextInput
+          style={[
+            styles.input,
+            errors.firstName && { borderColor: "red", borderWidth: 1 },
+          ]}
+          placeholder="Enter your first name"
+          value={firstName}
+          onChangeText={(text) => setFirstName(text)}
+          placeholderTextColor="#999"
+        />
+        {errors.firstName && (
+          <Text style={styles.errorText}>{errors.firstName}</Text>
+        )}
+
+        <Text style={styles.label}>Last Name</Text>
+        <TextInput
+          style={[
+            styles.input,
+            errors.lastName && { borderColor: "red", borderWidth: 1 },
+          ]}
+          placeholder="Enter your last name"
+          value={lastName}
+          onChangeText={(text) => setLastName(text)}
+          placeholderTextColor="#999"
+        />
+        {errors.lastName && (
+          <Text style={styles.errorText}>{errors.lastName}</Text>
+        )}
+
+        <Text style={styles.label}>Phone Number</Text>
+        <TextInput
+          style={[
+            styles.input,
+            errors.phoneNumber && { borderColor: "red", borderWidth: 1 },
+          ]}
+          placeholder="Enter your phone number"
+          value={phoneNumber}
+          onChangeText={(text) => setPhoneNumber(text)}
+          keyboardType="phone-pad"
+          placeholderTextColor="#999"
+        />
+        {errors.phoneNumber && (
+          <Text style={styles.errorText}>{errors.phoneNumber}</Text>
+        )}
+
+        <Text style={styles.label}>Email</Text>
+        <TextInput
+          style={[
+            styles.input,
+            errors.email && { borderColor: "red", borderWidth: 1 },
+          ]}
+          placeholder="Enter your email"
+          value={email}
+          onChangeText={(text) => setEmail(text)}
+          placeholderTextColor="#999"
+          keyboardType="email-address"
+          autoCapitalize="none"
+        />
+        {errors.email && <Text style={styles.errorText}>{errors.email}</Text>}
+
+        <Text style={styles.label}>Password</Text>
+        <View style={styles.passwordContainer}>
+          <TextInput
+            style={[
+              styles.input,
+              errors.password && { borderColor: "red", borderWidth: 1 },
+            ]}
+            placeholder="Enter your password"
+            value={password}
+            onChangeText={(text) => setPassword(text)}
+            secureTextEntry={!showPassword}
+            placeholderTextColor="#999"
+            autoCapitalize="none"
+          />
+          <TouchableOpacity
+            onPress={() => setShowPassword(!showPassword)}
+            style={styles.eyeIcon}
+          >
+            <Icon
+              name={showPassword ? "eye" : "eye-slash"}
+              size={20}
+              color="#999"
+            />
+          </TouchableOpacity>
+        </View>
+        {errors.password && (
+          <Text style={styles.errorText}>{errors.password}</Text>
+        )}
+
+        <View style={styles.checkboxContainer}>
+          <MyCheckbox
+            checked={isChecked}
+            onChange={() => setIsChecked(!isChecked)}
+          />
+          <TouchableOpacity onPress={handleTermsNavigation}>
+            <Text style={styles.checkboxLabel}>
+              I agree to the Terms and Conditions
+            </Text>
+          </TouchableOpacity>
+        </View>
+
+        <TouchableOpacity
+          style={[styles.button, loading && { backgroundColor: "gray" }]}
+          onPress={handleSignup}
+          disabled={loading}
+        >
+          {loading ? (
+            <ActivityIndicator color="#fff" />
+          ) : (
+            <Text style={styles.buttonText}>Sign Up</Text>
+          )}
         </TouchableOpacity>
+
+        <View style={styles.loginContainer}>
+          <Text style={styles.loginText}>Already have an account?</Text>
+          <TouchableOpacity onPress={() => navigation.navigate("Login")}>
+            <Text style={styles.loginLink}>Login here</Text>
+          </TouchableOpacity>
+        </View>
       </View>
-    </LinearGradient>
+    </ImageBackground>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
+  background: {
     flex: 1,
     justifyContent: "center",
+    alignItems: "center",
+  },
+  container: {
+    width: "90%",
+    backgroundColor: "#03254c",
     padding: 20,
+    borderRadius: 10,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.4,
+    shadowRadius: 6,
+    elevation: 8,
+    alignItems: "center",
   },
   title1: {
     fontSize: 24,
     fontWeight: "bold",
-    marginBottom: 50,
+    marginBottom: 20,
     textAlign: "center",
     color: "#fff",
   },
@@ -254,60 +291,70 @@ const styles = StyleSheet.create({
     color: "#fff",
   },
   label: {
-    fontSize: 18,
-    marginBottom: 10,
+    fontSize: 16,
     color: "#fff",
+    marginBottom: 5,
+    textAlign: "left",
+    width: "100%",
   },
   input: {
-    height: 40,
+    width: "100%",
+    padding: 10,
+    borderRadius: 5,
     backgroundColor: "#fff",
-    borderWidth: 0,
-    borderRadius: 5,
-    paddingHorizontal: 10,
-    marginBottom: 10,
-    color: "#000",
+    marginBottom: 15,
   },
-  button: {
-    backgroundColor: "black",
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 5,
-    alignItems: "center",
-    width: "50%",
-    alignSelf: "center",
-    marginTop: 20, // Added margin to create space between checkbox and button
+  passwordContainer: {
+    width: "100%",
+    position: "relative",
   },
-  buttonText: {
-    color: "#fff",
-    fontSize: 16,
-    textAlign: "center",
-  },
-  loginContainer: {
-    marginTop: 20,
-    alignItems: "center",
-  },
-  loginText: {
-    color: "#fff",
-    fontSize: 16,
-  },
-  loginLink: {
-    color: "#000",
-    fontSize: 16,
-    fontWeight: "bold",
-  },
-  errorText: {
-    color: "red",
-    marginBottom: 10,
+  eyeIcon: {
+    position: "absolute",
+    right: 10,
+    top: 10,
   },
   checkboxContainer: {
     flexDirection: "row",
     alignItems: "center",
-    marginTop: 20,
+    marginBottom: 15,
   },
   checkboxLabel: {
-    marginLeft: 8,
+    fontSize: 14,
     color: "#fff",
-    textDecorationLine: "underline",
+    marginLeft: 10,
+  },
+  button: {
+    width: "100%",
+    padding: 15,
+    backgroundColor: "black",
+    borderRadius: 5,
+    alignItems: "center",
+    marginTop: 10,
+  },
+  buttonText: {
+    fontSize: 16,
+    color: "#fff",
+    fontWeight: "bold",
+  },
+  loginContainer: {
+    flexDirection: "row",
+    marginTop: 20,
+    alignItems: "center",
+  },
+  loginText: {
+    fontSize: 14,
+    color: "#fff",
+  },
+  loginLink: {
+    fontSize: 14,
+    color: "#ffcc00",
+    marginLeft: 5,
+    fontWeight: "bold",
+  },
+  errorText: {
+    color: "red",
+    fontSize: 12,
+    marginBottom: 10,
   },
 });
 

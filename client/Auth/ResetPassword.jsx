@@ -1,18 +1,20 @@
 import React, { useState } from "react";
-import axios from "axios";
 import {
   View,
   Text,
   TextInput,
   TouchableOpacity,
   StyleSheet,
+  ImageBackground,
 } from "react-native";
-import { LinearGradient } from "expo-linear-gradient";
+import Icon from "react-native-vector-icons/FontAwesome";
 import axiosInstance from "../axiosInstance";
 
 const ResetPassword = ({ route, navigation }) => {
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [showNewPassword, setShowNewPassword] = useState(false); // State to toggle new password visibility
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false); // State to toggle confirm password visibility
 
   const handlePasswordReset = () => {
     const { resetToken } = route.params || {};
@@ -44,44 +46,83 @@ const ResetPassword = ({ route, navigation }) => {
   };
 
   return (
-    <LinearGradient
-      style={styles.container}
-      locations={[0.06, 0.11, 0.42, 0.73, 0.96]}
-      colors={["#050c9c", "#050c9c", "#3575ef", "#41c0f9", "#a7e6ff"]}
+    <ImageBackground
+      source={require("../assets/bg.jpg")}
+      style={styles.background}
     >
-      <Text style={styles.title}>Reset Password</Text>
-      <Text style={styles.label}>New Password</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="Enter your new password"
-        value={newPassword}
-        onChangeText={(text) => setNewPassword(text)}
-        placeholderTextColor="#999"
-        secureTextEntry
-        autoCapitalize="none"
-      />
-      <Text style={styles.label}>Confirm Password</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="Confirm your new password"
-        value={confirmPassword}
-        onChangeText={(text) => setConfirmPassword(text)}
-        placeholderTextColor="#999"
-        secureTextEntry
-        autoCapitalize="none"
-      />
-      <TouchableOpacity style={styles.button} onPress={handlePasswordReset}>
-        <Text style={styles.buttonText}>Submit</Text>
-      </TouchableOpacity>
-    </LinearGradient>
+      <View style={styles.container}>
+        <Text style={styles.title}>Reset Password</Text>
+
+        <Text style={styles.label}>New Password</Text>
+        <View style={styles.passwordContainer}>
+          <TextInput
+            style={styles.input}
+            placeholder="Enter your new password"
+            value={newPassword}
+            onChangeText={(text) => setNewPassword(text)}
+            placeholderTextColor="#999"
+            secureTextEntry={!showNewPassword}
+            autoCapitalize="none"
+          />
+          <TouchableOpacity
+            onPress={() => setShowNewPassword(!showNewPassword)}
+            style={styles.eyeIcon}
+          >
+            <Icon
+              name={showNewPassword ? "eye" : "eye-slash"}
+              size={20}
+              color="#999"
+            />
+          </TouchableOpacity>
+        </View>
+
+        <Text style={styles.label}>Confirm Password</Text>
+        <View style={styles.passwordContainer}>
+          <TextInput
+            style={styles.input}
+            placeholder="Confirm your new password"
+            value={confirmPassword}
+            onChangeText={(text) => setConfirmPassword(text)}
+            placeholderTextColor="#999"
+            secureTextEntry={!showConfirmPassword}
+            autoCapitalize="none"
+          />
+          <TouchableOpacity
+            onPress={() => setShowConfirmPassword(!showConfirmPassword)}
+            style={styles.eyeIcon}
+          >
+            <Icon
+              name={showConfirmPassword ? "eye" : "eye-slash"}
+              size={20}
+              color="#999"
+            />
+          </TouchableOpacity>
+        </View>
+
+        <TouchableOpacity style={styles.button} onPress={handlePasswordReset}>
+          <Text style={styles.buttonText}>Submit</Text>
+        </TouchableOpacity>
+      </View>
+    </ImageBackground>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
+  background: {
     flex: 1,
+    resizeMode: "cover",
     justifyContent: "center",
+  },
+  container: {
+    backgroundColor: "#063970",
     padding: 20,
+    borderRadius: 10,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.8,
+    shadowRadius: 5,
+    elevation: 5,
+    marginHorizontal: 20,
   },
   title: {
     fontSize: 24,
@@ -103,9 +144,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     marginBottom: 20,
     color: "#000",
+    width: "85%", // Adjust width as needed
   },
   button: {
-    width: "50%",
+    width: "100%",
     backgroundColor: "black",
     paddingVertical: 10,
     paddingHorizontal: 20,
@@ -116,6 +158,15 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontSize: 16,
     textAlign: "center",
+  },
+  passwordContainer: {
+    width: "100%",
+    position: "relative",
+  },
+  eyeIcon: {
+    position: "absolute",
+    right: 10,
+    top: 10,
   },
 });
 

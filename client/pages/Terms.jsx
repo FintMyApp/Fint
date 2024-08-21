@@ -5,9 +5,8 @@ import {
   ScrollView,
   ActivityIndicator,
   StyleSheet,
+  ImageBackground,
 } from "react-native";
-import axios from "axios";
-import { LinearGradient } from "expo-linear-gradient";
 import axiosInstance from "../axiosInstance";
 
 const Terms = () => {
@@ -30,19 +29,21 @@ const Terms = () => {
   }, []);
 
   return (
-    <LinearGradient
+    <ImageBackground
       style={styles.container}
-      locations={[0.06, 0.11, 0.42, 0.73, 0.96]}
-      colors={["#050c9c", "#050c9c", "#3575ef", "#41c0f9", "#a7e6ff"]}
+      source={require("../assets/bg.jpg")}
     >
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         {loading ? (
           <ActivityIndicator size="large" color="#fff" />
         ) : (
-          <Text style={styles.termsText}>{termsContent}</Text>
+          <View style={styles.termsContainer}>
+            <Text style={styles.title}>Terms and Conditions</Text>
+            <Text style={styles.termsText}>{termsContent}</Text>
+          </View>
         )}
       </ScrollView>
-    </LinearGradient>
+    </ImageBackground>
   );
 };
 
@@ -50,13 +51,24 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    justifyContent: "center",
   },
   scrollContainer: {
     paddingVertical: 20,
   },
+  termsContainer: {
+    backgroundColor: "#eeeee4",
+    borderRadius: 8,
+    padding: 20,
+    elevation: 3,
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: "bold",
+    color: "#000",
+    marginBottom: 15,
+  },
   termsText: {
-    color: "#fff",
+    color: "#000",
     fontSize: 16,
     lineHeight: 24,
     textAlign: "justify",

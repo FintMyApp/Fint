@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   Alert,
   ActivityIndicator,
+  ImageBackground,
 } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { LinearGradient } from "expo-linear-gradient";
@@ -83,58 +84,72 @@ const Otp = ({ navigation, route }) => {
   };
 
   return (
-    <LinearGradient
-      style={styles.container}
-      locations={[0.06, 0.11, 0.42, 0.73, 0.96]}
-      colors={["#050c9c", "#050c9c", "#3575ef", "#41c0f9", "#a7e6ff"]}
+    <ImageBackground
+      source={require("../assets/bg.jpg")}
+      style={styles.background}
     >
-      <Text style={styles.title}>Enter OTP</Text>
-      <View style={styles.otpContainer}>
-        <TextInput
-          style={styles.input}
-          placeholder="Enter OTP"
-          value={otp}
-          onChangeText={(text) => setOtp(text)}
-          secureTextEntry={!showOtp}
-          placeholderTextColor="#999"
-          keyboardType="number-pad"
-        />
-        <TouchableOpacity onPress={toggleOtpVisibility} style={styles.eyeIcon}>
-          <Icon name={showOtp ? "eye" : "eye-slash"} size={20} color="#999" />
+      <View style={styles.container}>
+        <Text style={styles.title}>Enter OTP</Text>
+        <View style={styles.otpContainer}>
+          <TextInput
+            style={styles.input}
+            placeholder="Enter OTP"
+            value={otp}
+            onChangeText={(text) => setOtp(text)}
+            secureTextEntry={!showOtp}
+            placeholderTextColor="#999"
+            keyboardType="number-pad"
+          />
+          <TouchableOpacity
+            onPress={toggleOtpVisibility}
+            style={styles.eyeIcon}
+          >
+            <Icon name={showOtp ? "eye" : "eye-slash"} size={20} color="#999" />
+          </TouchableOpacity>
+        </View>
+        <Text style={styles.timer}>
+          {timer > 0 ? `Time left: ${timer} sec` : "Time is up!"}
+        </Text>
+        {resendVisible && (
+          <TouchableOpacity
+            style={styles.resendButton}
+            onPress={handleResendOtp}
+            disabled={loading}
+          >
+            <Text style={styles.resendButtonText}>Resend OTP</Text>
+          </TouchableOpacity>
+        )}
+        <TouchableOpacity
+          style={[styles.button, loading && { backgroundColor: "gray" }]}
+          onPress={handleSubmit}
+          disabled={loading || !otp}
+        >
+          {loading ? (
+            <ActivityIndicator color="#fff" />
+          ) : (
+            <Text style={styles.buttonText}>Submit</Text>
+          )}
         </TouchableOpacity>
       </View>
-      <Text style={styles.timer}>
-        {timer > 0 ? `Time left: ${timer} sec` : "Time is up!"}
-      </Text>
-      {resendVisible && (
-        <TouchableOpacity
-          style={styles.resendButton}
-          onPress={handleResendOtp}
-          disabled={loading}
-        >
-          <Text style={styles.resendButtonText}>Resend OTP</Text>
-        </TouchableOpacity>
-      )}
-      <TouchableOpacity
-        style={[styles.button, loading && { backgroundColor: "gray" }]}
-        onPress={handleSubmit}
-        disabled={loading || !otp}
-      >
-        {loading ? (
-          <ActivityIndicator color="#fff" />
-        ) : (
-          <Text style={styles.buttonText}>Submit</Text>
-        )}
-      </TouchableOpacity>
-    </LinearGradient>
+    </ImageBackground>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
+  background: {
     flex: 1,
     justifyContent: "center",
+  },
+  container: {
+    backgroundColor: "#063970",
     padding: 20,
+    marginHorizontal: 20,
+    borderRadius: 10,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
   },
   title: {
     fontSize: 24,

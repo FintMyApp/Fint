@@ -1,8 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet, Button } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  ImageBackground,
+  Pressable,
+} from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axiosInstance from "../axiosInstance";
-import { LinearGradient } from "expo-linear-gradient";
 import { useNavigation } from "@react-navigation/native";
 
 const Home = () => {
@@ -46,13 +51,9 @@ const Home = () => {
       alert("Logout Failed, please try again");
     }
   };
-  const handlePay = async () => {
-    try {
-      navigation.navigate("Pay");
-    } catch (error) {
-      console.error("payment error", error.message);
-      alert("payment Failed, please try again");
-    }
+
+  const handlePay = () => {
+    navigation.navigate("Pay");
   };
 
   if (loading) {
@@ -64,55 +65,80 @@ const Home = () => {
   }
 
   return (
-    <LinearGradient
-      style={styles.container}
-      locations={[0.06, 0.11, 0.42, 0.73, 0.96]}
-      colors={["#050c9c", "#050c9c", "#3575ef", "#41c0f9", "#a7e6ff"]}
+    <ImageBackground
+      source={require("../assets/doodle.png")}
+      style={styles.backgroundImage}
     >
-      <View style={styles.contentContainer}>
-        <Text style={styles.title}>Welcome to Fint</Text>
-        <Text style={styles.title}>{userData?.firstName}</Text>
+      <View style={styles.overlay}>
+        <View style={styles.contentContainer}>
+          <Text style={styles.title}>Welcome to Fint</Text>
+          <Text style={styles.name}>{userData?.firstName}</Text>
+          <Text style={styles.balance}>Balance: ${userData?.balance}</Text>
+        </View>
+        <View style={styles.buttonContainer}>
+          <Pressable style={styles.button} onPress={handlePay}>
+            <Text style={styles.buttonText}>Pay</Text>
+          </Pressable>
+          <Pressable style={styles.button} onPress={handleLogout}>
+            <Text style={styles.buttonText}>Sign Out</Text>
+          </Pressable>
+        </View>
       </View>
-      <View style={styles.buttonContainer}>
-        <Button title="Pay" onPress={handlePay} color="#ff5757" />
-      </View>
-      <View style={styles.buttonContainer}>
-        <Button title="Sign Out" onPress={handleLogout} color="#ff5757" />
-      </View>
-    </LinearGradient>
+    </ImageBackground>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
+  backgroundImage: {
+    flex: 1,
+    resizeMode: "cover",
+  },
+  overlay: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
     padding: 20,
   },
   contentContainer: {
-    marginBottom: 40,
     alignItems: "center",
+    marginBottom: 40,
   },
   title: {
     fontSize: 28,
     fontWeight: "bold",
-    marginBottom: 20,
+    marginBottom: 10,
     textAlign: "center",
     color: "#fff",
   },
-  infoText: {
+  name: {
+    fontSize: 22,
+    color: "#fff",
+    marginBottom: 10,
+  },
+  balance: {
     fontSize: 18,
     color: "#fff",
-    marginVertical: 10,
+    marginBottom: 30,
+  },
+  buttonContainer: {
+    width: "80%",
+  },
+  button: {
+    backgroundColor: "#ff5757",
+    padding: 15,
+    borderRadius: 5,
+    marginBottom: 10,
+    alignItems: "center",
+  },
+  buttonText: {
+    color: "#fff",
+    fontSize: 16,
+    fontWeight: "bold",
   },
   loadingText: {
     fontSize: 20,
     color: "#fff",
-  },
-  buttonContainer: {
-    width: "80%",
-    marginTop: 30,
   },
 });
 

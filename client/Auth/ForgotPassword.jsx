@@ -6,9 +6,8 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   StyleSheet,
+  ImageBackground,
 } from "react-native";
-import { LinearGradient } from "expo-linear-gradient";
-import axios from "axios";
 import axiosInstance from "../axiosInstance";
 
 const ForgotPassword = ({ navigation }) => {
@@ -41,49 +40,62 @@ const ForgotPassword = ({ navigation }) => {
   };
 
   return (
-    <LinearGradient
-      style={styles.container}
-      locations={[0.06, 0.11, 0.42, 0.73, 0.96]}
-      colors={["#050c9c", "#050c9c", "#3575ef", "#41c0f9", "#a7e6ff"]}
+    <ImageBackground
+      source={require("../assets/bg.jpg")}
+      style={styles.background}
     >
-      <Text style={styles.title}>Forgot Password</Text>
-      <Text style={styles.label}>Email</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="Enter your email"
-        value={email}
-        onChangeText={(text) => setEmail(text)}
-        placeholderTextColor="#999"
-        keyboardType="email-address"
-        autoCapitalize="none"
-      />
-      <TouchableOpacity
-        style={[styles.button, loading && { backgroundColor: "gray" }]}
-        onPress={handleResetPassword}
-        disabled={loading}
-      >
-        {loading ? (
-          <ActivityIndicator color="#fff" />
-        ) : (
-          <Text style={styles.buttonText}>Reset Password</Text>
-        )}
-      </TouchableOpacity>
-
-      <View style={styles.loginContainer}>
-        <Text style={styles.loginText}>Remember your password?</Text>
-        <TouchableOpacity onPress={() => navigation.navigate("Login")}>
-          <Text style={styles.loginLink}>Login here</Text>
+      <View style={styles.container}>
+        <Text style={styles.title}>Forgot Password</Text>
+        <Text style={styles.label}>Email</Text>
+        <TextInput
+          style={styles.input}
+          placeholder="Enter your email"
+          value={email}
+          onChangeText={(text) => setEmail(text)}
+          placeholderTextColor="#999"
+          keyboardType="email-address"
+          autoCapitalize="none"
+        />
+        <TouchableOpacity
+          style={[styles.button, loading && { backgroundColor: "gray" }]}
+          onPress={handleResetPassword}
+          disabled={loading}
+        >
+          {loading ? (
+            <ActivityIndicator color="#fff" />
+          ) : (
+            <Text style={styles.buttonText}>Reset Password</Text>
+          )}
         </TouchableOpacity>
+
+        <View style={styles.loginContainer}>
+          <Text style={styles.loginText}>Remember your password?</Text>
+          <TouchableOpacity onPress={() => navigation.navigate("Login")}>
+            <Text style={styles.loginLink}>Login here</Text>
+          </TouchableOpacity>
+        </View>
       </View>
-    </LinearGradient>
+    </ImageBackground>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
+  background: {
     flex: 1,
+    resizeMode: "cover",
     justifyContent: "center",
+  },
+  container: {
+    backgroundColor: "#063970",
     padding: 20,
+    borderRadius: 10,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.8,
+    shadowRadius: 5,
+    elevation: 5,
+    marginHorizontal: 20,
+    alignItems: "center",
   },
   title: {
     fontSize: 24,
@@ -96,6 +108,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     marginBottom: 10,
     color: "#fff",
+    alignSelf: "flex-start",
   },
   input: {
     height: 40,
@@ -105,14 +118,14 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     marginBottom: 20,
     color: "#000",
+    width: "100%",
   },
   button: {
-    width: "50%",
+    width: "100%",
     backgroundColor: "black",
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 5,
-    alignSelf: "center",
     alignItems: "center",
   },
   buttonText: {
@@ -130,7 +143,7 @@ const styles = StyleSheet.create({
   },
   loginLink: {
     fontSize: 16,
-    color: "#fff",
+    color: "#ffcc00",
     fontWeight: "bold",
     marginTop: 10,
   },
