@@ -31,7 +31,7 @@ const Terms = () => {
   return (
     <ImageBackground
       style={styles.container}
-      source={require("../assets/bg.jpg")}
+      source={require("../assets/bg.png")}
     >
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         {loading ? (

@@ -21,27 +21,21 @@ const ForgotPassword = ({ navigation }) => {
         email,
       })
       .then((response) => {
-        console.log(response.data);
         alert("Reset link sent to your email!");
         const { resetToken } = response.data;
-        console.log(resetToken);
-
         navigation.navigate("ResetPassword", { resetToken });
       })
       .catch((error) => {
-        console.error(error.message);
         alert("Failed to send reset link!");
       })
       .finally(() => {
         setLoading(false);
       });
-
-    console.log("Reset Password button pressed", { email });
   };
 
   return (
     <ImageBackground
-      source={require("../assets/bg.jpg")}
+      source={require("../assets/bg.png")}
       style={styles.background}
     >
       <View style={styles.container}>
@@ -84,17 +78,20 @@ const styles = StyleSheet.create({
     flex: 1,
     resizeMode: "cover",
     justifyContent: "center",
+    paddingHorizontal: 20,
   },
   container: {
-    backgroundColor: "#063970",
+    backgroundColor: "#1b1464",
     padding: 20,
     borderRadius: 10,
+
+    width: "80%",
+    alignSelf: "center",
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.8,
     shadowRadius: 5,
     elevation: 5,
-    marginHorizontal: 20,
     alignItems: "center",
   },
   title: {
@@ -105,7 +102,7 @@ const styles = StyleSheet.create({
     color: "#fff",
   },
   label: {
-    fontSize: 18,
+    fontSize: 16,
     marginBottom: 10,
     color: "#fff",
     alignSelf: "flex-start",
@@ -113,7 +110,6 @@ const styles = StyleSheet.create({
   input: {
     height: 40,
     backgroundColor: "#fff",
-    borderWidth: 0,
     borderRadius: 5,
     paddingHorizontal: 10,
     marginBottom: 20,
@@ -122,9 +118,8 @@ const styles = StyleSheet.create({
   },
   button: {
     width: "100%",
-    backgroundColor: "black",
+    backgroundColor: "#000",
     paddingVertical: 10,
-    paddingHorizontal: 20,
     borderRadius: 5,
     alignItems: "center",
   },

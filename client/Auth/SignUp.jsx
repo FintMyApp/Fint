@@ -56,7 +56,7 @@ const SignUp = ({ navigation }) => {
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
   const [isChecked, setIsChecked] = useState(false);
-  const [showPassword, setShowPassword] = useState(false); // State to toggle password visibility
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleSignup = async () => {
     setLoading(true);
@@ -122,12 +122,11 @@ const SignUp = ({ navigation }) => {
 
   return (
     <ImageBackground
-      source={require("../assets/bg.jpg")}
+      source={require("../assets/bg.png")}
       style={styles.background}
     >
       <View style={styles.container}>
-        <Text style={styles.title1}>FINT</Text>
-        <Text style={styles.title}>Welcome, Create an Account</Text>
+        <Text style={styles.title}>Create an Account</Text>
 
         {errors.general && (
           <Text style={styles.errorText}>{errors.general}</Text>
@@ -265,23 +264,17 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   container: {
-    width: "90%",
-    backgroundColor: "#03254c",
-    padding: 20,
+    backgroundColor: "#1b1464",
     borderRadius: 10,
+    padding: 20,
+    width: "80%",
+    maxWidth: 400,
+    alignSelf: "center",
     shadowColor: "#000",
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.4,
-    shadowRadius: 6,
-    elevation: 8,
-    alignItems: "center",
-  },
-  title1: {
-    fontSize: 24,
-    fontWeight: "bold",
-    marginBottom: 20,
-    textAlign: "center",
-    color: "#fff",
+    shadowOffset: { width: 8, height: 12 },
+    shadowOpacity: 0.3,
+    shadowRadius: 15,
+    elevation: 12,
   },
   title: {
     fontSize: 24,
@@ -295,65 +288,64 @@ const styles = StyleSheet.create({
     color: "#fff",
     marginBottom: 5,
     textAlign: "left",
-    width: "100%",
   },
   input: {
-    width: "100%",
-    padding: 10,
-    borderRadius: 5,
     backgroundColor: "#fff",
-    marginBottom: 15,
+    borderRadius: 5,
+    padding: 10,
+    marginBottom: 10,
+    fontSize: 16,
+    color: "#000",
   },
   passwordContainer: {
-    width: "100%",
     position: "relative",
+    marginBottom: 10,
   },
   eyeIcon: {
     position: "absolute",
     right: 10,
-    top: 10,
+    top: "50%",
+    transform: [{ translateY: -10 }],
   },
   checkboxContainer: {
     flexDirection: "row",
     alignItems: "center",
-    marginBottom: 15,
+    marginBottom: 20,
   },
   checkboxLabel: {
-    fontSize: 14,
     color: "#fff",
     marginLeft: 10,
+    fontSize: 14,
   },
   button: {
-    width: "100%",
+    backgroundColor: "#4a8cfd",
     padding: 15,
-    backgroundColor: "black",
     borderRadius: 5,
     alignItems: "center",
-    marginTop: 10,
   },
   buttonText: {
-    fontSize: 16,
     color: "#fff",
+    fontSize: 18,
     fontWeight: "bold",
   },
   loginContainer: {
     flexDirection: "row",
+    justifyContent: "center",
     marginTop: 20,
-    alignItems: "center",
   },
   loginText: {
-    fontSize: 14,
     color: "#fff",
+    fontSize: 16,
   },
   loginLink: {
-    fontSize: 14,
-    color: "#ffcc00",
-    marginLeft: 5,
+    color: "#4a8cfd",
+    fontSize: 16,
     fontWeight: "bold",
+    marginLeft: 5,
   },
   errorText: {
     color: "red",
-    fontSize: 12,
+    fontSize: 14,
     marginBottom: 10,
   },
 });

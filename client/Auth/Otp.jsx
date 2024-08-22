@@ -85,7 +85,7 @@ const Otp = ({ navigation, route }) => {
 
   return (
     <ImageBackground
-      source={require("../assets/bg.jpg")}
+      source={require("../assets/bg.png")}
       style={styles.background}
     >
       <View style={styles.container}>
@@ -141,15 +141,17 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   container: {
-    backgroundColor: "#063970",
-    padding: 20,
-    marginHorizontal: 20,
+    backgroundColor: "#1b1464",
     borderRadius: 10,
+    padding: 20,
+    width: "80%",
+    maxWidth: 400,
+    alignSelf: "center",
     shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
+    shadowOffset: { width: 8, height: 12 },
+    shadowOpacity: 0.3,
+    shadowRadius: 15,
+    elevation: 12,
   },
   title: {
     fontSize: 24,

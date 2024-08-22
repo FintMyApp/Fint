@@ -47,7 +47,7 @@ const ResetPassword = ({ route, navigation }) => {
 
   return (
     <ImageBackground
-      source={require("../assets/bg.jpg")}
+      source={require("../assets/bg.png")}
       style={styles.background}
     >
       <View style={styles.container}>
@@ -114,7 +114,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   container: {
-    backgroundColor: "#063970",
+    backgroundColor: "#1b1464",
     padding: 20,
     borderRadius: 10,
     shadowColor: "#000",
