@@ -12,7 +12,9 @@ import ForgotPassword from "./Auth/ForgotPassword";
 import ResetPassword from "./Auth/ResetPassword";
 import Home from "./pages/Home";
 import Terms from "./pages/Terms";
-import Pay from "./pages/Pay";
+import { QRCodeScreen } from "./pages/QrGen";
+
+import Input from "./pages/Input";
 const Stack = createNativeStackNavigator();
 
 export default function App() {
@@ -36,7 +38,8 @@ export default function App() {
         <Stack.Screen name="ResetPassword" component={ResetPassword} />
         <Stack.Screen name="Home" component={Home} />
         <Stack.Screen name="Terms" component={Terms} />
-        <Stack.Screen name="Pay" component={Pay} />
+        <Stack.Screen name="Input" component={Input} />
+        <Stack.Screen name="QrGen" component={QRCodeScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

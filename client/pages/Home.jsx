@@ -5,10 +5,13 @@ import {
   StyleSheet,
   ImageBackground,
   Pressable,
+  Image,
+  TouchableHighlight,
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axiosInstance from "../axiosInstance";
 import { useNavigation } from "@react-navigation/native";
+import { LinearGradient } from "expo-linear-gradient";
 
 const Home = () => {
   const [userData, setUserData] = useState(null);
@@ -53,7 +56,7 @@ const Home = () => {
   };
 
   const handlePay = () => {
-    navigation.navigate("Pay");
+    navigation.navigate("Input");
   };
 
   if (loading) {
@@ -65,76 +68,118 @@ const Home = () => {
   }
 
   return (
-    <ImageBackground
-      source={require("../assets/doodle.png")}
-      style={styles.backgroundImage}
-    >
-      <View style={styles.overlay}>
-        <View style={styles.contentContainer}>
-          <Text style={styles.title}>Welcome to Fint</Text>
-          <Text style={styles.name}>{userData?.firstName}</Text>
-          <Text style={styles.balance}>Balance: ${userData?.balance}</Text>
-        </View>
-        <View style={styles.buttonContainer}>
-          <Pressable style={styles.button} onPress={handlePay}>
-            <Text style={styles.buttonText}>Pay</Text>
-          </Pressable>
-          <Pressable style={styles.button} onPress={handleLogout}>
-            <Text style={styles.buttonText}>Sign Out</Text>
-          </Pressable>
+    <View style={styles.homeContainer}>
+      <LinearGradient
+        style={styles.backgroundGradient}
+        locations={[0, 0.99]}
+        colors={["#2135b3", "#0c2462"]}
+      />
+      <View style={styles.headerContainer}>
+        <Image
+          style={styles.arrowBackIcon}
+          source={require("../assets/arrow-back.png")}
+          alt="img"
+        />
+        <Text style={styles.userName}>{userData?.firstName}</Text>
+      </View>
+      <View style={styles.contentContainer}>
+        <Text style={styles.title}>Welcome to Fint</Text>
+        <Text style={styles.balance}>Balance: ${userData?.balance}</Text>
+        <Pressable style={styles.component1}>
+          <TouchableHighlight
+            style={styles.button}
+            underlayColor="#fff"
+            onPress={handlePay}
+          >
+            <Text style={styles.buttonText}>Generate QR code</Text>
+          </TouchableHighlight>
+        </Pressable>
+        <View style={styles.button2}>
+          <Text style={styles.buttonText}>FINT ADS</Text>
         </View>
       </View>
-    </ImageBackground>
+      <View style={styles.footer} />
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  backgroundImage: {
+  homeContainer: {
     flex: 1,
-    resizeMode: "cover",
+    backgroundColor: "#fff",
   },
-  overlay: {
-    flex: 1,
-    justifyContent: "center",
+  backgroundGradient: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    width: "100%",
+    height: "100%",
+  },
+  headerContainer: {
+    flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
-    padding: 20,
+    padding: 16,
+    position: "absolute",
+    top: 50,
+    left: 20,
   },
-  contentContainer: {
-    alignItems: "center",
-    marginBottom: 40,
+  arrowBackIcon: {
+    width: 24,
+    height: 24,
+    marginRight: 16,
   },
-  title: {
-    fontSize: 28,
-    fontWeight: "bold",
-    marginBottom: 10,
-    textAlign: "center",
-    color: "#fff",
-  },
-  name: {
-    fontSize: 22,
-    color: "#fff",
-    marginBottom: 10,
-  },
-  balance: {
+  userName: {
     fontSize: 18,
     color: "#fff",
-    marginBottom: 30,
+    fontWeight: "bold",
   },
-  buttonContainer: {
-    width: "80%",
+  contentContainer: {
+    marginTop: 160,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  title: {
+    fontSize: 30,
+    color: "#fff",
+    marginBottom: 20,
+  },
+  balance: {
+    fontSize: 22,
+    color: "#fff",
+    marginBottom: 40,
   },
   button: {
-    backgroundColor: "#ff5757",
-    padding: 15,
-    borderRadius: 5,
-    marginBottom: 10,
-    alignItems: "center",
+    backgroundColor: "#fff",
+    paddingVertical: 12,
+    paddingHorizontal: 32,
+    borderRadius: 8,
+    borderColor: "#2c2c2c",
+    borderWidth: 1,
+    marginBottom: 20,
   },
   buttonText: {
-    color: "#fff",
+    color: "#2c2c2c",
     fontSize: 16,
-    fontWeight: "bold",
+    textAlign: "center",
+  },
+  button2: {
+    backgroundColor: "#fa9746",
+    paddingVertical: 12,
+    paddingHorizontal: 32,
+    borderRadius: 8,
+    borderColor: "#2c2c2c",
+    borderWidth: 1,
+    marginBottom: 20,
+  },
+  footer: {
+    position: "absolute",
+    bottom: 0,
+    left: 0,
+    width: "100%",
+    height: 60,
+    backgroundColor: "#d9d9d9",
+    borderTopLeftRadius: 60,
+    borderTopRightRadius: 60,
   },
   loadingText: {
     fontSize: 20,
