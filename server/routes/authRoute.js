@@ -10,6 +10,7 @@ import { getUserProfile } from "../controllers/UserController.js";
 import { resendOtp } from "../controllers/resendOtp.js";
 import { QrGen } from "../controllers/QrController.js";
 import { validateQrCode } from "../controllers/ValidateQr.js";
+import { Affiliate } from "../controllers/Affiliate.js";
 
 const router = express.Router();
 
@@ -20,6 +21,7 @@ router.post("/reset/:token", passwordReset);
 router.get("/profile", authMiddleware, getUserProfile);
 router.post("/QrScreen", QrGen);
 router.get("/validateQrCode", validateQrCode);
+router.get("/Affiliate", Affiliate);
 router.get("/me", authMiddleware, async (req, res) => {
   res.json(req.user);
 });

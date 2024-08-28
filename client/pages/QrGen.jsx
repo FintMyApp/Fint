@@ -1,6 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, Image, StyleSheet, Button } from "react-native";
-import axios from "axios";
+import {
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  ImageBackground,
+  TouchableOpacity,
+} from "react-native";
+import axiosInstance from "../axiosInstance";
 
 export function QRCodeScreen({ route, navigation }) {
   const { amount } = route.params;
@@ -13,10 +20,7 @@ export function QRCodeScreen({ route, navigation }) {
   useEffect(() => {
     const generateQrCode = async () => {
       try {
-        const response = await axios.post(
-          "http://192.168.0.103:8000/api/auth/QrScreen",
-          { amount }
-        );
+        const response = await axiosInstance.post("/auth/QrScreen", { amount });
         setQrCode(response.data.qrCodeData);
         setExpirationTime(response.data.expirationTime);
         setError(null);
@@ -34,7 +38,7 @@ export function QRCodeScreen({ route, navigation }) {
         if (prevTimeLeft <= 1) {
           clearInterval(timer);
           setQrCode(null);
-          setShowAds(true); // Show ads when QR code expires
+          setShowAds(true);
         }
         return prevTimeLeft - 1;
       });
@@ -49,7 +53,7 @@ export function QRCodeScreen({ route, navigation }) {
         const currentTime = Date.now();
         if (currentTime > expirationTime) {
           setQrCode(null);
-          setShowAds(true); // Show ads when QR code expires
+          setShowAds(true);
         }
       };
 
@@ -59,13 +63,26 @@ export function QRCodeScreen({ route, navigation }) {
   }, [expirationTime]);
 
   return (
-    <View style={styles.container}>
+    <ImageBackground
+      source={require("../assets/bg.png")}
+      style={styles.container}
+      resizeMode="cover"
+    >
       {error ? (
         <Text style={styles.errorText}>{error}</Text>
       ) : qrCode && timeLeft > 0 ? (
         <>
-          <Text style={styles.timer}>Time left: {timeLeft} seconds</Text>
-          <Image source={{ uri: qrCode }} style={styles.qrImage} />
+          <Text style={styles.header}>YOUR QR CODE</Text>
+          <View style={styles.qrContainer}>
+            <Image source={{ uri: qrCode }} style={styles.qrImage} />
+            <Text style={styles.timer}>Time left: {timeLeft}s</Text>
+          </View>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => setTimeLeft(30)}
+          >
+            <Text style={styles.buttonText}>Re-generate</Text>
+          </TouchableOpacity>
         </>
       ) : showAds ? (
         <View style={styles.adsContainer}>
@@ -76,7 +93,7 @@ export function QRCodeScreen({ route, navigation }) {
           The QR code has expired. Please generate a new one.
         </Text>
       )}
-    </View>
+    </ImageBackground>
   );
 }
 
@@ -87,20 +104,42 @@ const styles = StyleSheet.create({
     alignItems: "center",
     padding: 20,
   },
-  timer: {
-    fontSize: 18,
-    marginBottom: 10,
-    color: "red",
+  header: {
+    fontSize: 22,
+    color: "#fff",
+    marginBottom: 20,
+  },
+  qrContainer: {
+    backgroundColor: "rgba(0, 0, 0, 0.2)",
+    padding: 20,
+    borderRadius: 10,
+    alignItems: "center",
   },
   qrImage: {
-    marginTop: 20,
     width: 200,
     height: 200,
+    marginBottom: 10,
+  },
+  timer: {
+    fontSize: 16,
+    color: "#fff",
+    marginTop: 10,
+  },
+  button: {
+    marginTop: 20,
+    backgroundColor: "#fff",
+    paddingVertical: 10,
+    paddingHorizontal: 40,
+    borderRadius: 20,
+  },
+  buttonText: {
+    color: "#0043A2",
+    fontSize: 16,
   },
   message: {
     fontSize: 18,
     textAlign: "center",
-    color: "gray",
+    color: "#fff",
   },
   errorText: {
     fontSize: 18,

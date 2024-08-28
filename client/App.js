@@ -15,6 +15,10 @@ import Terms from "./pages/Terms";
 import { QRCodeScreen } from "./pages/QrGen";
 
 import Input from "./pages/Input";
+import ContactList from "./pages/Contact";
+import PaymentScreen from "./pages/HandlePayment";
+import Affiliate from "./pages/Affiliate";
+import Profile from "./pages/Profile";
 const Stack = createNativeStackNavigator();
 
 export default function App() {
@@ -40,6 +44,10 @@ export default function App() {
         <Stack.Screen name="Terms" component={Terms} />
         <Stack.Screen name="Input" component={Input} />
         <Stack.Screen name="QrGen" component={QRCodeScreen} />
+        <Stack.Screen name="contact" component={ContactList} />
+        <Stack.Screen name="PaymentScreen" component={PaymentScreen} />
+        <Stack.Screen name="Affiliate" component={Affiliate} />
+        <Stack.Screen name="profile" component={Profile} />
       </Stack.Navigator>
     </NavigationContainer>
   );

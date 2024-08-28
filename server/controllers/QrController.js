@@ -1,15 +1,17 @@
 import QRCode from "qrcode";
 
 export const QrGen = async (req, res) => {
-  const { amount } = req.body;
-  const upiId = process.env.UPI_ID;
+  const { amount, mobileNumber } = req.body;
   const name = process.env.NAME;
   const note = process.env.NOTE || "Payment";
 
-  const expirationTime = Date.now() + 30 * 1000; // 30 seconds from now
+  const expirationTime = Date.now() + 30 * 1000;
 
   try {
-    const upiUrl = `upi://pay?pa=${upiId}&pn=${name}&am=${amount}&tn=${note}&expires=${expirationTime}`;
+    const paymentAddress = mobileNumber
+      ? `${mobileNumber}@upi`
+      : process.env.UPI_ID;
+    const upiUrl = `upi://pay?pa=${paymentAddress}&pn=${name}&am=${amount}&tn=${note}&expires=${expirationTime}`;
 
     const qrCodeData = await QRCode.toDataURL(upiUrl);
 
