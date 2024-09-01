@@ -4,6 +4,8 @@ import cors from "cors";
 import authRoute from "./routes/authRoute.js";
 import otpVerify from "./routes/otp.js";
 import Terms from "./routes/Terms.js";
+import freeLanceAuth from "./routes/freeLance.js";
+import admob from "./routes/AdRoutes.js";
 import { DBconnection } from "./DB.js";
 dotenv.config();
 const app = express();
@@ -26,6 +28,8 @@ const port = process.env.PORT || 1000;
 app.use("/api/auth", authRoute);
 app.use("/api/otp", otpVerify);
 app.use("/api/policy", Terms);
+app.use("/api/freeLance", freeLanceAuth);
+app.use("/api/admob", admob);
 app.listen(port, () => {
   console.log(`server is running on port ${port}`);
 });

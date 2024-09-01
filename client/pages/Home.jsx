@@ -68,6 +68,10 @@ export default function App() {
     navigation.navigate("profile");
   };
 
+  const handleFreeLanceClick = () => {
+    console.log("Navigating to freeLance");
+    navigation.navigate("freeLancePage");
+  };
   if (loading) {
     return (
       <View style={styles.loadingContainer}>
@@ -146,7 +150,10 @@ export default function App() {
           >
             <Text style={styles.businessButtonText}>Fint Affiliates</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.businessButton} onPress={() => {}}>
+          <TouchableOpacity
+            style={styles.businessButton}
+            onPress={handleFreeLanceClick}
+          >
             <Text style={styles.businessButtonText}>Freelance</Text>
           </TouchableOpacity>
         </View>
