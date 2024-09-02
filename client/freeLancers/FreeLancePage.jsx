@@ -42,7 +42,7 @@ export const FreeLancePage = () => {
 
         <Pressable
           style={[styles.button, styles.glassMorphism]}
-          onPress={() => navigation.navigate("freeLanceSignUp")}
+          onPress={() => navigation.navigate("freeLanceSignin")}
         >
           <Text style={styles.buttonText}>I want to work</Text>
           <Image
@@ -60,7 +60,10 @@ export const FreeLancePage = () => {
           accessibilityLabel="Hire illustration"
         />
 
-        <Pressable style={[styles.button, styles.glassMorphism]}>
+        <Pressable
+          style={[styles.button, styles.glassMorphism]}
+          onPress={() => navigation.navigate("GetAllFreeLancers")}
+        >
           <Text style={styles.buttonText}>I want to hire</Text>
           <Image
             style={styles.arrowIconInsideButton}

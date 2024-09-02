@@ -2,6 +2,14 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { FreeLancers } from "../models/FreeLanceModel.js";
 import { z } from "zod";
+import multer from "multer";
+import cloudinary from "cloudinary";
+
+// cloudinary.v2.config({
+//   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+//   api_key: process.env.CLOUDINARY_API_KEY,
+//   api_secret: process.env.CLOUDINARY_API_SECRET,
+// });
 
 const freelancerRegisterSchema = z.object({
   fullName: z
@@ -58,9 +66,29 @@ export const FreeLancerRegister = async (req, res) => {
       expiresIn: "1d",
     });
 
-    res.json({ token });
+    res.json({
+      user: fUser,
+      token, // Include the token in the response
+    });
   } catch (error) {
     console.error("Freelancer registration error:", error);
+    res.status(500).json({ message: error.message || "Server error" });
+  }
+};
+
+export const uploadImage = async (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ message: "No image file uploaded" });
+    }
+
+    const uploadedImage = await cloudinary.v2.uploader.upload(req.file.path, {
+      folder: "portfolio_images",
+    });
+
+    res.json({ imageUrl: uploadedImage.secure_url });
+  } catch (error) {
+    console.error("Image upload error:", error);
     res.status(500).json({ message: error.message || "Server error" });
   }
 };
@@ -83,7 +111,9 @@ export const FreeLancerLogin = async (req, res) => {
 
     const isPasswordValid = await bcrypt.compare(password, fUser.password);
     if (!isPasswordValid) {
-      return res.status(400).json({ message: "Invalid email or password" });
+      return res
+        .status(400)
+        .json({ message: "Invalid phoneNumber or password" });
     }
 
     const payload = { id: fUser._id };
@@ -91,7 +121,10 @@ export const FreeLancerLogin = async (req, res) => {
       expiresIn: "1d",
     });
 
-    res.json({ token });
+    res.json({
+      user: fUser,
+      token, // Include the token in the response
+    });
   } catch (error) {
     console.error("Freelancer login error:", error);
     res.status(500).json({ message: error.message || "Server error" });

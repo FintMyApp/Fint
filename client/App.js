@@ -22,6 +22,9 @@ import Profile from "./pages/Profile";
 import { FreeLancePage } from "./freeLancers/FreeLancePage";
 import { FreeLanceSignUp } from "./freeLancers/FAuth";
 import { FreeLanceUploadPortfolio } from "./freeLancers/FAuth2";
+import { FreeLanceProfile } from "./freeLancers/FProfile";
+import { FreeLanceLogin } from "./freeLancers/FLogin";
+import { FreelancerList } from "./freeLancers/GetAll";
 const Stack = createNativeStackNavigator();
 
 export default function App() {
@@ -53,6 +56,9 @@ export default function App() {
         <Stack.Screen name="profile" component={Profile} />
         <Stack.Screen name="freeLancePage" component={FreeLancePage} />
         <Stack.Screen name="freeLanceSignUp" component={FreeLanceSignUp} />
+        <Stack.Screen name="freeLanceSignin" component={FreeLanceLogin} />
+        <Stack.Screen name="freeLanceProfile" component={FreeLanceProfile} />
+        <Stack.Screen name="GetAllFreeLancers" component={FreelancerList} />
         <Stack.Screen
           name="freeLanceUploadPortfolio"
           component={FreeLanceUploadPortfolio}

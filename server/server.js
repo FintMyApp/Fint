@@ -28,7 +28,7 @@ const port = process.env.PORT || 1000;
 app.use("/api/auth", authRoute);
 app.use("/api/otp", otpVerify);
 app.use("/api/policy", Terms);
-app.use("/api/freeLance", freeLanceAuth);
+app.use("/api/freelance", freeLanceAuth);
 app.use("/api/admob", admob);
 app.listen(port, () => {
   console.log(`server is running on port ${port}`);

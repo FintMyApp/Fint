@@ -1,7 +1,10 @@
 import React, { useState } from "react";
 import { View, Text, TouchableOpacity, StyleSheet, Image } from "react-native";
 import * as ImagePicker from "expo-image-picker";
+import * as FileSystem from "expo-file-system"; // Import FileSystem to handle file operations
+
 import { useNavigation } from "@react-navigation/native";
+import axiosInstance from "../axiosInstance";
 
 export const FreeLanceUploadPortfolio = () => {
   const navigation = useNavigation();
@@ -20,6 +23,43 @@ export const FreeLanceUploadPortfolio = () => {
     }
   };
 
+  const handleUpload = async () => {
+    if (!image) {
+      alert("Please select an image first.");
+      return;
+    }
+
+    try {
+      // Extract the image's extension (e.g., jpg, png)
+      const imageExtension = image.split(".").pop();
+
+      const formData = new FormData();
+      formData.append("image", {
+        uri: image,
+        type: `image/${imageExtension}`,
+        name: `portfolio.${imageExtension}`,
+      });
+
+      const response = await axiosInstance.post(
+        "/freelance/upload-image",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        alert("Image uploaded successfully!");
+        navigation.navigate("Home");
+      }
+    } catch (error) {
+      console.error("Image upload error:", error);
+      alert("An error occurred during image upload. Please try again.");
+    }
+  };
+
   return (
     <View style={styles.container}>
       <TouchableOpacity
@@ -31,32 +71,26 @@ export const FreeLanceUploadPortfolio = () => {
         <Text style={styles.backButtonText}>{"<-"}</Text>
       </TouchableOpacity>
 
-      <Text style={styles.title}>Upload Your Portfolio</Text>
+      <Text style={styles.title}>Upload Portfolio Image</Text>
 
-      <TouchableOpacity style={styles.imagePicker} onPress={pickImage}>
-        {image ? (
-          <Image source={{ uri: image }} style={styles.imagePreview} />
-        ) : (
-          <Text style={styles.imagePickerText}>Pick an Image</Text>
-        )}
+      <TouchableOpacity
+        style={styles.pickImageButton}
+        onPress={pickImage}
+        accessible={true}
+        accessibilityLabel="Pick an image"
+      >
+        <Text style={styles.pickImageButtonText}>Pick an Image</Text>
       </TouchableOpacity>
+
+      {image && <Image source={{ uri: image }} style={styles.image} />}
 
       <TouchableOpacity
         style={styles.uploadButton}
-        onPress={() => alert("Image uploaded successfully!")}
+        onPress={handleUpload}
         accessible={true}
         accessibilityLabel="Upload Image"
       >
         <Text style={styles.uploadButtonText}>Upload</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity
-        style={styles.finishButton}
-        onPress={() => navigation.navigate("Home")}
-        accessible={true}
-        accessibilityLabel="Finish"
-      >
-        <Text style={styles.finishButtonText}>Finish</Text>
       </TouchableOpacity>
     </View>
   );
@@ -65,10 +99,9 @@ export const FreeLanceUploadPortfolio = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#c7eef4",
+    backgroundColor: "#f2f2f2",
     padding: 20,
     alignItems: "center",
-    justifyContent: "center",
   },
   backButton: {
     position: "absolute",
@@ -83,52 +116,38 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     fontWeight: "bold",
-    marginBottom: 20,
-    color: "#000",
+    marginVertical: 20,
   },
-  imagePicker: {
-    width: 150,
-    height: 150,
-    backgroundColor: "#d9d9d9",
+  pickImageButton: {
+    backgroundColor: "#0763ef",
+    paddingVertical: 15,
+    paddingHorizontal: 30,
     borderRadius: 12,
-    justifyContent: "center",
     alignItems: "center",
     marginBottom: 20,
+    elevation: 3,
   },
-  imagePickerText: {
-    color: "#000",
-    fontSize: 16,
+  pickImageButtonText: {
+    color: "#fff",
+    fontSize: 18,
   },
-  imagePreview: {
-    width: "100%",
-    height: "100%",
+  image: {
+    width: 300,
+    height: 300,
+    marginVertical: 20,
     borderRadius: 12,
   },
   uploadButton: {
     backgroundColor: "#0763ef",
     paddingVertical: 15,
+    paddingHorizontal: 30,
     borderRadius: 12,
-    width: "100%",
     alignItems: "center",
     marginBottom: 20,
     elevation: 3,
   },
   uploadButtonText: {
     color: "#fff",
-    fontSize: 20,
-    fontWeight: "bold",
-  },
-  finishButton: {
-    backgroundColor: "#0ea4f9",
-    paddingVertical: 15,
-    borderRadius: 12,
-    width: "100%",
-    alignItems: "center",
-    elevation: 3,
-  },
-  finishButtonText: {
-    color: "#fff",
-    fontSize: 20,
-    fontWeight: "bold",
+    fontSize: 18,
   },
 });
