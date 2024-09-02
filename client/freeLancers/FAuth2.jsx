@@ -30,7 +30,6 @@ export const FreeLanceUploadPortfolio = () => {
     }
 
     try {
-      // Extract the image's extension (e.g., jpg, png)
       const imageExtension = image.split(".").pop();
 
       const formData = new FormData();

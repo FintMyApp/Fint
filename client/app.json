@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "my-app",
-    "slug": "my-app",
+    "slug": "fint",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -26,8 +26,9 @@
     },
     "extra": {
       "eas": {
-        "projectId": "0c5348e9-db80-410c-bae1-338d56114a09"
+        "projectId": "d7b00a4d-b8d5-4c5d-94b0-bb9e653a8ead"
       }
-    }
+    },
+    "owner": "hemanth21"
   }
 }

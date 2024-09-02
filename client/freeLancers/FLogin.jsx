@@ -70,9 +70,6 @@ export const FreeLanceLogin = () => {
           return;
         }
 
-        // You can store the token here if needed, for example using AsyncStorage
-        // await AsyncStorage.setItem('authToken', token);
-
         navigation.navigate("freeLanceProfile", { userId });
       }
     } catch (error) {

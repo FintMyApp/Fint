@@ -37,8 +37,8 @@ export const addAd = async (req, res) => {
       description,
       imageUrl,
       link,
-      startDate: new Date(startDate), 
-      endDate: new Date(endDate), 
+      startDate: new Date(startDate),
+      endDate: new Date(endDate),
     });
 
     await newAd.save();

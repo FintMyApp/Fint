@@ -15,7 +15,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 app.get("/", (req, res) => {
-  res.send("Hello from Node.js!");
+  res.send("Hello from fint");
 });
 
 app.post("/api/data", (req, res) => {
@@ -25,11 +25,12 @@ app.post("/api/data", (req, res) => {
   res.json({ receivedMessage: message });
 });
 const port = process.env.PORT || 1000;
+const HOST = process.env.HOST;
 app.use("/api/auth", authRoute);
 app.use("/api/otp", otpVerify);
 app.use("/api/policy", Terms);
 app.use("/api/freelance", freeLanceAuth);
 app.use("/api/admob", admob);
-app.listen(port, () => {
-  console.log(`server is running on port ${port}`);
+app.listen(port, HOST, () => {
+  console.log(`server is running on port ${port},${HOST}`);
 });
