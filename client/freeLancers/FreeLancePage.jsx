@@ -32,7 +32,6 @@ export const FreeLancePage = () => {
           Don’t worry, this can be changed later.
         </Text>
 
-        {/* Image on top of "I want to work" button */}
         <Image
           style={styles.imagePlaceholder}
           source={require("../assets/freeLance/image-151.png")}
